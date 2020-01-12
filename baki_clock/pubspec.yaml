@@ -1,0 +1,34 @@
+name: baki_clock
+description: Baki clock.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^4.0.1
+  flutter_clock_helper:
+    path: ../flutter_clock_helper
+  cupertino_icons: ^0.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  fonts:        
+    - family: IBMPlexSans-Medium
+      fonts:
+        - asset: third_party/IBMPlexSans-Medium.ttf                      
+    - family: BebasNeue-Regular
+      fonts:
+        - asset: third_party/BebasNeue-Regular.ttf                                               
+  assets:
+    - assets/elements/
+    - assets/elements/ghosts/
+    - assets/weather/dark/
+    - assets/weather/light/  
+
