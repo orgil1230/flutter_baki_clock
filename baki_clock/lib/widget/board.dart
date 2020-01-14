@@ -15,18 +15,18 @@ class Board extends StatelessWidget {
 
     Cells cells = Cells(droidPosition);
     cells.items.forEach((cell) {
-      pathGrid.add(Positioned(
-        child: Container(
-          height: SizeConfig.cellHeight,
-          width: SizeConfig.cellWidth,
-          alignment: Alignment.center,
-          child: CellItem(
-            cell: cell,
+      pathGrid.add(
+        Positioned(
+          child: Container(
+            height: SizeConfig.cellHeight,
+            width: SizeConfig.cellWidth,
+            alignment: Alignment.center,
+            child: CellItem(cell: cell),
           ),
+          bottom: cell.point.y * SizeConfig.cellHeight,
+          left: cell.point.x * SizeConfig.cellWidth,
         ),
-        bottom: cell.point.y * SizeConfig.cellHeight,
-        left: cell.point.x * SizeConfig.cellWidth,
-      ));
+      );
     });
 
     return pathGrid;

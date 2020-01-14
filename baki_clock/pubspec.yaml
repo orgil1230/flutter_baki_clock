@@ -27,6 +27,11 @@ flutter:
       fonts:
         - asset: third_party/BebasNeue-Regular.ttf                                               
   assets:
+    - assets/elements/droid_open_mouth_left.png
+    - assets/elements/droid_open_mouth_right.png
+    - assets/elements/droid_idle.png
+    - assets/elements/apple_bitten.png
+    - assets/elements/apple.png
     - assets/elements/
     - assets/elements/ghosts/
     - assets/weather/dark/

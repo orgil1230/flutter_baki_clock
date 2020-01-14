@@ -147,7 +147,7 @@ class _BakiClockState extends State<BakiClock> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return ResponsiveSafeArea(builder: (context, size) {
       SizeConfig().init(context, size);
-      //Screen height without safeArea height
+
       return Container(
         height: SizeConfig.screenHeight,
         width: SizeConfig.screenWidth,
