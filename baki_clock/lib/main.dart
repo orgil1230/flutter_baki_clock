@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
-import './model/droid.dart';
+import './model/cells.dart';
 import './provider/theme.dart';
 
 import 'baki_clock.dart';
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: model),
       ],
       child: Injector(
-          inject: [Inject(() => DroidModel())],
+          inject: [Inject(() => Cells())],
           builder: (_) {
             return BakiClock();
           }),

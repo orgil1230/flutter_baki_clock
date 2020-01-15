@@ -7,6 +7,7 @@ class Cell {
   final Color color;
   final Point point;
   CellType cellType;
+  CellType mood;
   bool isBitten;
   bool animate;
 
@@ -15,6 +16,7 @@ class Cell {
     @required this.isBitten,
     @required this.color,
     @required this.cellType,
+    @required this.mood,
     @required this.point,
     @required this.animate,
   });

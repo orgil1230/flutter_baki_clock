@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
 import '../config/size_config.dart';
-import '../config/const.dart';
 import './cell_item.dart';
 
 import '../model/cells.dart';
@@ -16,19 +15,19 @@ class Board extends StatefulWidget {
 }
 
 class _BoardState extends State<Board> {
-  DroidModel _droidModel;
+  Cells _cells;
   bool init = false;
 
   @override
   void initState() {
     super.initState();
-    _droidModel = Injector.get();
+    _cells = Injector.get();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Future.microtask(() => _droidModel.moveDroid());
+    Future.microtask(() => _cells.moveDroid());
   }
 
   @override
@@ -39,21 +38,19 @@ class _BoardState extends State<Board> {
 
   List<Positioned> _buildCells() {
     final pathGrid = <Positioned>[];
-    Cells cells = Cells(5);
-    int i = 0;
-    cells.items.forEach((cell) {
+
+    for (var cell in _cells.items) {
       pathGrid.add(
         Positioned(
           child: Container(
             height: SizeConfig.cellHeight,
             width: SizeConfig.cellWidth,
             alignment: Alignment.center,
-            child: StateBuilder<DroidModel>(
-              models: [_droidModel],
-              tag: i,
+            child: StateBuilder<Cells>(
+              models: [_cells],
+              tag: cell.position,
               builder: (context, model) => CellItem(
                 cell: cell,
-                position: _droidModel.position,
               ),
             ),
           ),
@@ -61,8 +58,7 @@ class _BoardState extends State<Board> {
           left: cell.point.x * SizeConfig.cellWidth,
         ),
       );
-      i++;
-    });
+    }
 
     return pathGrid;
   }
@@ -74,12 +70,12 @@ class _BoardState extends State<Board> {
         vertical: SizeConfig.verticalMargin,
         horizontal: SizeConfig.horizontalMargin,
       ),
-      child: StateWithMixinBuilder(
-        mixinWith: MixinWith.automaticKeepAliveClientMixin,
-        builder: (_, __) => Stack(
-          children: _buildCells(),
-        ),
+      child: Stack(
+        children: _buildCells(),
       ),
     );
   }
+  //StateWithMixinBuilder(
+  //        mixinWith: MixinWith.automaticKeepAliveClientMixin,
+  //        builder: (_, __) =>
 }
