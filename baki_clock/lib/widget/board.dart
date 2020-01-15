@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
+import 'package:provider/provider.dart';
 
 import '../config/size_config.dart';
 import './cell_item.dart';
 
 import '../model/cells.dart';
 import '../model/droid.dart';
+
+import '../provider/theme.dart';
 
 class Board extends StatefulWidget {
   @override
@@ -38,6 +41,7 @@ class _BoardState extends State<Board> {
 
   List<Positioned> _buildCells() {
     final pathGrid = <Positioned>[];
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
     for (var cell in _cells.items) {
       pathGrid.add(
@@ -46,11 +50,18 @@ class _BoardState extends State<Board> {
             height: SizeConfig.cellHeight,
             width: SizeConfig.cellWidth,
             alignment: Alignment.center,
-            child: StateBuilder<Cells>(
-              models: [_cells],
-              tag: cell.position,
-              builder: (context, model) => CellItem(
-                cell: cell,
+            child: StateWithMixinBuilder<TickerProvider>(
+              mixinWith: MixinWith.singleTickerProviderStateMixin,
+              initState: (_, ticker) => _cells.initAnimation(
+                ticker,
+                themeProvider.data[ELEMENT.dot],
+                cell.color,
+              ),
+              dispose: (_, ___) => _cells.dispose(),
+              builder: (_, ___) => StateBuilder<Cells>(
+                models: [_cells],
+                tag: cell.position,
+                builder: (context, model) => CellItem(cell: cell),
               ),
             ),
           ),
@@ -75,7 +86,4 @@ class _BoardState extends State<Board> {
       ),
     );
   }
-  //StateWithMixinBuilder(
-  //        mixinWith: MixinWith.automaticKeepAliveClientMixin,
-  //        builder: (_, __) =>
 }
