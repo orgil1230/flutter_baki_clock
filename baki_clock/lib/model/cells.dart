@@ -3,18 +3,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
-import 'package:provider/provider.dart';
 
 import '.././config/utils.dart';
 import '.././config/const.dart';
-import '../provider/theme.dart';
 import './cell.dart';
 
 final List<dynamic> pathList = Utils.generatePathCoordinate();
 final List<Color> dotColors = Utils.generateDotColors();
 
 class Cells extends StatesRebuilder {
-  List<Cell> _items = [];
+  var _items = <Cell>[];
   var _droidPosition;
   var _now = DateTime.now();
 
@@ -73,17 +71,10 @@ class Cells extends StatesRebuilder {
   }
 
   void toReset() {
-    if (_droidPosition == 119) {
-      int j = 0;
-      for (var item in _items) {
-        item.isBitten = false;
-        triggerAnimation(j);
-//        if (j % QUARTER_DIVIDE_CELLS == 0) {
-//          rebuildStates(['$j']);
-//        }
-        j++;
-      }
+    for (var item in _items) {
+      item.isBitten = false;
     }
+    rebuildStates();
   }
 
   /* Let we know first Droid Position
@@ -121,42 +112,10 @@ class Cells extends StatesRebuilder {
     }
 
     _items[_droidPosition].mood = CellType.droid;
-
     rebuildStates(['$_droidPosition']); //Most useful part of my app
 
-    toReset();
+    if (_droidPosition == POSITION_RESET) toReset();
+
     await Future.delayed(Duration(milliseconds: sleepTime), moveDroid);
-  }
-
-  AnimationController controller;
-  Animation animation;
-
-  initAnimation(TickerProvider ticker, Color beginColor, Color endColor) {
-    controller = AnimationController(
-        duration: Duration(seconds: ANIMATION_DURATION), vsync: ticker);
-    animation = ColorTween(
-      begin: beginColor,
-      end: endColor,
-    ).animate(controller);
-
-    animation.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        controller.reset();
-      }
-    });
-  }
-
-  VoidCallback listener;
-  triggerAnimation(tagID) {
-    animation.removeListener(listener);
-    listener = () {
-      rebuildStates();
-    };
-    animation.addListener(listener);
-    controller.forward();
-  }
-
-  dispose() {
-    controller.dispose();
   }
 }

@@ -53,20 +53,15 @@ class _ClockState extends State<Clock> {
     int second = int.parse(DateFormat('s').format(_now));
 
     //Color transfer right to left every minutes
-    List<Widget> list = new List<Widget>();
+    var list = <Widget>[];
     var startPos = int.parse(time.substring(2, 4)) % 4;
+
     for (var i = 0; i < time.length; i++) {
       var beginColor = (i + startPos) % 4;
       var endColor = (beginColor + 1) % 4;
 
-      if (i == 2) {
-        list.add(
-          Colon(
-            second: second,
-            colorPosition: startPos,
-          ),
-        );
-      }
+      if (i == 2) list.add(Colon(second: second, colorPosition: startPos));
+
       list.add(
         Time(
           time: time[i],

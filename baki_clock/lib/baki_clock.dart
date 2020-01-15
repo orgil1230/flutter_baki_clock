@@ -24,14 +24,12 @@ class BakiClock extends StatefulWidget {
   _BakiClockState createState() => _BakiClockState();
 }
 
-class _BakiClockState extends State<BakiClock> with WidgetsBindingObserver {
+class _BakiClockState extends State<BakiClock> {
   ThemeProvider _theme;
 
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addObserver(this);
     _theme = Provider.of<ThemeProvider>(context, listen: false);
   }
 
@@ -43,22 +41,6 @@ class _BakiClockState extends State<BakiClock> with WidgetsBindingObserver {
         Theme.of(context).brightness == Brightness.light
             ? LIGHT_THEME
             : DARK_THEME);
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _theme.setStateInActive = false;
-    }
-    if (state == AppLifecycleState.inactive) {
-      _theme.setStateInActive = true;
-    } // Need to know if app inactive and paused, dot's animation won't work little trick we can change it
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override
