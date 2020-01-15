@@ -9,7 +9,9 @@ import 'package:flutter_clock_helper/model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:states_rebuilder/states_rebuilder.dart';
 
+import './model/droid.dart';
 import './provider/theme.dart';
 
 import 'baki_clock.dart';
@@ -34,10 +36,13 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider(theme: 'light')),
+        ChangeNotifierProvider.value(value: model),
       ],
-      child: Consumer<ThemeProvider>(
-        builder: (context, cells, _) => BakiClock(model),
-      ),
+      child: Injector(
+          inject: [Inject(() => DroidModel())],
+          builder: (_) {
+            return BakiClock();
+          }),
     );
   }
 }

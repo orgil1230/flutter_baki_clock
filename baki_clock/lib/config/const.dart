@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+const ANIMATION_DURATION = 3;
 const MOVE_SPEED = 500; //Droid move every 500 milliseconds 1 cell
 const MILLI_SECOND = 1000;
-const ANIMATION_DURATION = 3;
 const QUARTER_DIVIDE_CELLS = 30;
 const QUARTER_SECONDS = 15;
 const X_AXIS_MAX = 38; // 39x23 Grid 120 cells

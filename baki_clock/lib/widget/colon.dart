@@ -6,11 +6,11 @@ import '../config/size_config.dart';
 class Colon extends StatelessWidget {
   const Colon({
     Key key,
-    @required this.droidPosition,
+    @required this.second,
     @required this.colorPosition,
   }) : super(key: key);
 
-  final int droidPosition;
+  final int second;
   final int colorPosition;
 
   @override
@@ -22,11 +22,11 @@ class Colon extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Ghost(
-            droidPositon: droidPosition,
+            second: second,
             colorPosition: colorPosition,
           ),
           Ghost(
-            droidPositon: droidPosition,
+            second: second,
             colorPosition: (colorPosition + 1) % 4,
           ),
         ],

@@ -8,10 +8,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^4.0.1
   flutter_clock_helper:
     path: ../flutter_clock_helper
+  provider: ^4.0.1
   cupertino_icons: ^0.1.2
+  states_rebuilder: ^1.11.2
 
 dev_dependencies:
   flutter_test:

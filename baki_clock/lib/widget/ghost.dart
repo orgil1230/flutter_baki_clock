@@ -6,11 +6,11 @@ import '../config/size_config.dart';
 class Ghost extends StatelessWidget {
   const Ghost({
     Key key,
-    @required this.droidPositon,
+    @required this.second,
     @required this.colorPosition,
   }) : super(key: key);
 
-  final int droidPositon;
+  final int second;
   final int colorPosition;
 
   @override
@@ -27,8 +27,7 @@ class Ghost extends StatelessWidget {
 
   String ghost() {
     String color = GHOST_COLORS[colorPosition];
-    int position =
-        colorPosition.isEven ? (droidPositon + 2) % 4 : droidPositon % 4;
+    int position = colorPosition.isEven ? (second + 2) % 4 : second % 4;
 
     return 'assets/elements/ghosts/${color}_$position.png';
   }

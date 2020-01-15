@@ -12,9 +12,11 @@ class CellItem extends StatefulWidget {
   const CellItem({
     Key key,
     @required this.cell,
+    @required this.position,
   }) : super(key: key);
 
   final Cell cell;
+  final int position;
 
   @override
   _CellItemState createState() => _CellItemState();
@@ -30,6 +32,10 @@ class _CellItemState extends State<CellItem> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.position == widget.cell.position) {
+      widget.cell.cellType = CellType.droid;
+    }
+
     switch (widget.cell.cellType) {
       case CellType.droid:
         return Droid(position: widget.cell.position, color: widget.cell.color);

@@ -18,8 +18,10 @@ class ThemeProvider with ChangeNotifier {
   get data => theme == 'light' ? lightTheme : darkTheme;
 
   set setStateInActive(bool state) {
-    this.stateInActive = state;
-    notifyListeners();
+    if (stateInActive != state) {
+      stateInActive = state;
+      notifyListeners();
+    }
   }
 
   set setThemeLight(String val) {

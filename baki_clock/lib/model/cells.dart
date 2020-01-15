@@ -42,8 +42,8 @@ class Cells {
       return CellType.droid;
     else if (position % QUARTER_DIVIDE_CELLS == 0)
       return CellType.apple;
-    // There are an apples in every 15 seconds = 30 cells
-    else if (position.isEven) return CellType.dot;
+    // There are apples in every 15 seconds = 30 cells
+    else if (position.isEven) return CellType.dot; // dots every seconds
 
     return CellType.space;
     // Odd positions are an empty cells. (Every 0.5 seconds 1 empty cell)
