@@ -14,7 +14,7 @@ class ThemeProvider with ChangeNotifier {
 
   String theme;
 
-  get data => theme == 'light' ? lightTheme : darkTheme;
+  Map<ELEMENT, Color> get data => theme == 'light' ? lightTheme : darkTheme;
 
   set setThemeLight(String val) {
     if (theme != val) {
@@ -23,21 +23,21 @@ class ThemeProvider with ChangeNotifier {
     }
   }
 
-  final lightTheme = {
-    ELEMENT.background: Colors.white,
-    ELEMENT.clock: Color(0xFF2334B6),
-    ELEMENT.temperature: Color(0xFF63629C),
-    ELEMENT.date: Color(0xFF63629C),
-    ELEMENT.score: Color(0xFF4549D0),
-    ELEMENT.dot: Color(0xFFE4E7E9), //Color(0xff505786),
+  final Map<ELEMENT, Color> darkTheme = <ELEMENT, Color>{
+    ELEMENT.background: const Color(0xFF222543),
+    ELEMENT.clock: Colors.white,
+    ELEMENT.temperature: const Color(0xFFb3bdff),
+    ELEMENT.date: const Color(0xFFb3bdff),
+    ELEMENT.score: const Color(0xFFb4bdff),
+    ELEMENT.dot: const Color(0xff272C4A),
   };
 
-  final darkTheme = {
-    ELEMENT.background: Color(0xFF222543),
-    ELEMENT.clock: Colors.white,
-    ELEMENT.temperature: Color(0xFFb3bdff),
-    ELEMENT.date: Color(0xFFb3bdff),
-    ELEMENT.score: Color(0xFFb4bdff),
-    ELEMENT.dot: Color(0xff272C4A),
+  final Map<ELEMENT, Color> lightTheme = <ELEMENT, Color>{
+    ELEMENT.background: Colors.white,
+    ELEMENT.clock: const Color(0xFF2334B6),
+    ELEMENT.temperature: const Color(0xFF63629C),
+    ELEMENT.date: const Color(0xFF63629C),
+    ELEMENT.score: const Color(0xFF4549D0),
+    ELEMENT.dot: const Color(0xFFE4E7E9),
   };
 }

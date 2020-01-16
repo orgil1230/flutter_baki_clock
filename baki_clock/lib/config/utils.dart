@@ -5,18 +5,23 @@ import 'package:flutter/material.dart';
 import '../model/point.dart';
 import './const.dart';
 
+const int X_AXIS_MAX = 38; // 39x23 Grid 120 cells
+const int Y_AXIS_MAX = 22; // 39x23 Grid 120 cells
+const int POSITION_ZERO = 41; // 0th or 60th second's position in pathList
+const int QUARTER_SECONDS = 15; // Gradient color change every 60/4 = 15 seconds
+
 class Utils {
   static List<Color> generateDotColors() {
-    List<Color> _dotColors = new List<Color>(); // Color(0xff505786);
+    final List<Color> _dotColors = <Color>[];
     double _interpolation;
 
-    for (int i = 0; i < GOOGLE_COLORS.length; i++) {
+    for (int i = 0; i < Const.GOOGLE_COLORS.length; i++) {
       for (int j = 0; j < QUARTER_SECONDS; j++) {
         _interpolation = double.parse((j / QUARTER_SECONDS).toStringAsFixed(2));
         _dotColors.add(
           Color.lerp(
-            GOOGLE_COLORS[i],
-            GOOGLE_COLORS[(i + 1) % GOOGLE_COLORS.length],
+            Const.GOOGLE_COLORS[i],
+            Const.GOOGLE_COLORS[(i + 1) % Const.GOOGLE_COLORS.length],
             _interpolation,
           ),
         );
@@ -26,11 +31,11 @@ class Utils {
     return _dotColors;
   }
 
-  static List<dynamic> generatePathCoordinate() {
+  static List<Point> generatePathCoordinate() {
     int _x = 0;
     int _y = 0;
     int _addend = 1;
-    List<dynamic> _tempBoard = [];
+    List<Point> _tempBoard = <Point>[];
 
     while ((_y < Y_AXIS_MAX && _addend > 0) || (_y > 0 && _addend < 0)) {
       _tempBoard.add(Point(_x.toDouble(), _y.toDouble()));
@@ -49,19 +54,19 @@ class Utils {
       }
     }
 
-    _tempBoard = new List.from(_tempBoard.sublist(POSITION_ZERO))
-      ..addAll(_tempBoard.sublist(0, POSITION_ZERO));
-  /*              {39}
+    /*        horizontal: 39
     101 102 * * * * 0 * * * * 18 19
     100                          20
       *                           *
       *                           *
-      *                           *  {23}
+      *                           *  vertical: 23
       *                           *
      80                          40
      79 78  * * * * * * * * * 42 41
-     calculate this :)
-  */
+              calculate this
+    */
+    _tempBoard = List<Point>.from(_tempBoard.sublist(POSITION_ZERO))
+      ..addAll(_tempBoard.sublist(0, POSITION_ZERO));
 
     return _tempBoard;
   }

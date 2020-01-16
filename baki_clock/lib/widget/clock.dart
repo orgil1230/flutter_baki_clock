@@ -37,7 +37,7 @@ class _ClockState extends State<Clock> {
     setState(() {
       _now = DateTime.now();
       _timer = Timer(
-        Duration(seconds: 1) - Duration(milliseconds: _now.millisecond),
+        const Duration(seconds: 1) - Duration(milliseconds: _now.millisecond),
         _updateTime,
       );
     });
@@ -49,24 +49,25 @@ class _ClockState extends State<Clock> {
     final String hour =
         DateFormat(model.is24HourFormat ? 'HH' : 'hh').format(_now);
     final String minute = DateFormat('mm').format(_now);
-    final String time = (hour + minute);
-    int second = int.parse(DateFormat('s').format(_now));
+    final String time = hour + minute;
+    final int second = int.parse(DateFormat('s').format(_now));
 
+    final List<Widget> list = <Widget>[];
+    final int startPos = int.parse(time.substring(2, 4)) % 4;
     //Color transfer right to left every minutes
-    var list = <Widget>[];
-    var startPos = int.parse(time.substring(2, 4)) % 4;
+    for (int i = 0; i < time.length; i++) {
+      final int beginColor = (i + startPos) % 4;
+      final int endColor = (beginColor + 1) % 4;
 
-    for (var i = 0; i < time.length; i++) {
-      var beginColor = (i + startPos) % 4;
-      var endColor = (beginColor + 1) % 4;
-
-      if (i == 2) list.add(Colon(second: second, colorPosition: startPos));
+      if (i == 2) {
+        list.add(Colon(second: second, colorPosition: startPos));
+      }
 
       list.add(
         Time(
           time: time[i],
-          beginColor: GOOGLE_COLORS[beginColor],
-          endColor: GOOGLE_COLORS[endColor],
+          beginColor: Const.GOOGLE_COLORS[beginColor],
+          endColor: Const.GOOGLE_COLORS[endColor],
           animate: second == 59,
         ),
       );

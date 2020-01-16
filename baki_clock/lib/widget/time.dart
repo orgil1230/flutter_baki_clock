@@ -28,10 +28,10 @@ class _TimeState extends State<Time> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: ANIMATION_DURATION),
+      duration: const Duration(seconds: Const.ANIMATION_DURATION),
       vsync: this,
     );
-    void handler(status) {
+    void handler(AnimationStatus status) {
       if (status == AnimationStatus.completed) {
         _controller.reset();
         _animation = ColorTween(
@@ -49,7 +49,7 @@ class _TimeState extends State<Time> with SingleTickerProviderStateMixin {
   }
 
   @override
-  dispose() {
+  void dispose() {
     _controller?.dispose();
     super.dispose();
   }
@@ -68,7 +68,7 @@ class _TimeState extends State<Time> with SingleTickerProviderStateMixin {
           child: Text(
             widget.time,
             style: TextStyle(
-              fontFamily: PRIMARY_FONT,
+              fontFamily: Const.PRIMARY_FONT,
               height: 1.0,
               color: _animation.value,
             ),

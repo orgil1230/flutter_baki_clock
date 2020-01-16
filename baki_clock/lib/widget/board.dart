@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
 import '../config/size_config.dart';
-import './cell_item.dart';
-
+import '../model/cell.dart';
 import '../model/cells.dart';
+import './cell_item.dart';
 
 class Board extends StatefulWidget {
   @override
@@ -25,18 +25,19 @@ class _BoardState extends State<Board> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Future.microtask(() => _cells.moveDroid());
+    Future<void>.microtask(() => _cells.moveDroid());
   }
 
   @override
   void dispose() {
+    _cells.stopTimer();
     super.dispose();
   }
 
   List<Positioned> _buildCells() {
-    final pathGrid = <Positioned>[];
+    final List<Positioned> pathGrid = <Positioned>[];
 
-    for (var cell in _cells.items) {
+    for (final Cell cell in _cells.items) {
       pathGrid.add(
         Positioned(
           child: Container(
@@ -44,9 +45,10 @@ class _BoardState extends State<Board> {
             width: SizeConfig.cellWidth,
             alignment: Alignment.center,
             child: StateBuilder<Cells>(
-              models: [_cells],
+              models: <Cells>[_cells],
               tag: cell.position,
-              builder: (context, model) => CellItem(cell: cell),
+              builder: (BuildContext context, ReactiveModel<Cells> model) =>
+                  CellItem(cell: cell),
             ),
           ),
           bottom: cell.point.y * SizeConfig.cellHeight,

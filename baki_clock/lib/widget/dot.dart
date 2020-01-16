@@ -25,13 +25,15 @@ class _DotState extends State<Dot> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    final ThemeProvider theme =
+        Provider.of<ThemeProvider>(context, listen: true);
+
     setState(() {
       fade = widget.isBitten;
     });
     return AnimatedCrossFade(
-      duration: const Duration(seconds: ANIMATION_DURATION),
-      firstChild: dot(themeProvider.data[ELEMENT.dot]),
+      duration: const Duration(seconds: Const.ANIMATION_DURATION),
+      firstChild: dot(theme.data[ELEMENT.dot]),
       secondChild: dot(widget.color),
       crossFadeState:
           fade ? CrossFadeState.showFirst : CrossFadeState.showSecond,

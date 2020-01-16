@@ -10,11 +10,14 @@ dependencies:
     sdk: flutter
   flutter_clock_helper:
     path: ../flutter_clock_helper
-  provider: ^4.0.1
   cupertino_icons: ^0.1.2
+  provider: ^4.0.1
   states_rebuilder: ^1.11.2
+  analyzer: ^0.39.4
 
 dev_dependencies:
+  pedantic: ^1.8.0
+  effective_dart: ^1.2.0
   flutter_test:
     sdk: flutter
 
@@ -28,11 +31,6 @@ flutter:
       fonts:
         - asset: third_party/BebasNeue-Regular.ttf                                               
   assets:
-    - assets/elements/droid_open_mouth_left.png
-    - assets/elements/droid_open_mouth_right.png
-    - assets/elements/droid_idle.png
-    - assets/elements/apple_bitten.png
-    - assets/elements/apple.png
     - assets/elements/
     - assets/elements/ghosts/
     - assets/weather/dark/

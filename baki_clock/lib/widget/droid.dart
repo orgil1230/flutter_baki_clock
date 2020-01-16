@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../config/const.dart';
 import '../config/size_config.dart';
+
+const int START_TOP_SIDE = 101;
+const int START_RIGHT_SIDE = 19;
+const int START_BOTTOM_SIDE = 41;
+const int START_LEFT_SIDE = 79;
+const String DROID_IDLE = 'droid_idle.png';
+const String DROID_OPEN_MOUTH_LEFT = 'droid_open_mouth_left.png';
+const String DROID_OPEN_MOUTH_RIGHT = 'droid_open_mouth_right.png';
 
 class Droid extends StatelessWidget {
   const Droid({
@@ -10,8 +17,8 @@ class Droid extends StatelessWidget {
     @required this.color,
   }) : super(key: key);
 
-  final position;
-  final color;
+  final int position;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +28,7 @@ class Droid extends StatelessWidget {
       child: RotatedBox(
         quarterTurns: droidTurn(),
         child: Image.asset(
-          droid(),
+          'assets/elements/${droid()}',
           fit: BoxFit.contain,
           alignment: Alignment.center,
           color: color,
@@ -36,6 +43,16 @@ class Droid extends StatelessWidget {
         : droidTurn() >= 4 ? DROID_OPEN_MOUTH_LEFT : DROID_OPEN_MOUTH_RIGHT;
   }
 
+  /*          horizontal: 39
+    101 102 * * * * 0 * * * * 18 19
+    100                          20
+      *                           *
+      *                           *
+      *                           *  vertical: 23
+      *                           *
+     80                          40
+     79 78  * * * * * * * * * 42 41
+  */
   int droidTurn() {
     if (position >= START_TOP_SIDE || position <= START_RIGHT_SIDE) {
       return 0; // droid move left to right

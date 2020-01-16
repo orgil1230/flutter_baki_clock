@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../model/cell.dart';
 
-import './dot.dart';
 import './apple.dart';
+import './dot.dart';
 import './droid.dart';
 
 class CellItem extends StatelessWidget {

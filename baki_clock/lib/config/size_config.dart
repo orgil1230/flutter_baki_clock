@@ -2,8 +2,8 @@ import 'package:flutter/widgets.dart';
 
 class SizeConfig {
   /* 39x2 + 21x2 = 120 cells */
-  static const GRID_HORIZONTAL = 39;
-  static const GRID_VERTICAL = 23; // added top and bottom 21 + 1 + 1
+  static const int GRID_HORIZONTAL = 39; // horizontal cells
+  static const int GRID_VERTICAL = 23; // vertical cells added top and bottom 21 + 1 + 1
 
   static MediaQueryData _mediaQueryData;
 

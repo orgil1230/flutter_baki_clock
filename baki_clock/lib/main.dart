@@ -34,15 +34,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ThemeProvider(theme: 'light')),
-        ChangeNotifierProvider.value(value: model),
+      providers: <ChangeNotifierProvider<dynamic>>[
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (_) => ThemeProvider(theme: 'light'),
+        ),
+        ChangeNotifierProvider<ClockModel>.value(
+          value: model,
+        ),
       ],
       child: Injector(
-          inject: [Inject(() => Cells())],
-          builder: (_) {
-            return BakiClock();
-          }),
+        inject: <Inject<Cells>>[Inject<Cells>(() => Cells())],
+        builder: (_) {
+          return BakiClock();
+        },
+      ),
     );
   }
 }

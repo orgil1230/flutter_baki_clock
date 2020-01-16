@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../config/const.dart';
 import '../config/size_config.dart';
 
+const String APPLE_IDLE = 'assets/elements/apple.png';
+const String APPLE_BITTEN = 'assets/elements/apple_bitten.png';
+
 class Apple extends StatefulWidget {
   const Apple({
     Key key,
@@ -10,8 +13,8 @@ class Apple extends StatefulWidget {
     @required this.color,
   }) : super(key: key);
 
-  final isBitten;
-  final color;
+  final bool isBitten;
+  final Color color;
 
   @override
   _AppleState createState() => _AppleState();
@@ -26,7 +29,7 @@ class _AppleState extends State<Apple> {
       fade = widget.isBitten;
     });
     return AnimatedCrossFade(
-      duration: const Duration(seconds: ANIMATION_DURATION),
+      duration: const Duration(seconds: Const.ANIMATION_DURATION),
       firstChild: apple(APPLE_BITTEN),
       secondChild: apple(APPLE_IDLE),
       crossFadeState:

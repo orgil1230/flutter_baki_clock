@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../config/const.dart';
 import '../config/size_config.dart';
+
+const List<String> GHOSTS = <String>[
+  'inky',   //blue
+  'blinky', //red
+  'clyde',  //yellow
+  'pinky',  //green
+];
 
 class Ghost extends StatelessWidget {
   const Ghost({
@@ -26,9 +32,9 @@ class Ghost extends StatelessWidget {
   }
 
   String ghost() {
-    String color = GHOST_COLORS[colorPosition];
-    int position = colorPosition.isEven ? (second + 2) % 4 : second % 4;
+    final String ghost = GHOSTS[colorPosition];
+    final int position = colorPosition.isEven ? (second + 2) % 4 : second % 4;
 
-    return 'assets/elements/ghosts/${color}_$position.png';
+    return 'assets/elements/ghosts/${ghost}_$position.png';
   }
 }

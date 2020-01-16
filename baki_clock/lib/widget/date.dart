@@ -11,12 +11,12 @@ class Date extends StatelessWidget {
   Widget build(BuildContext context) {
     final String date =
         DateFormat('EE dd MMM').format(DateTime.now()).toUpperCase();
-    final ThemeProvider themeProvider =
+    final ThemeProvider theme =
         Provider.of<ThemeProvider>(context, listen: false);
 
     final TextStyle textStyle = TextStyle(
-      color: themeProvider.data[ELEMENT.date],
-      fontFamily: SECONDARY_FONT,
+      color: theme.data[ELEMENT.date],
+      fontFamily: Const.SECONDARY_FONT,
       fontSize: SizeConfig.secondaryFontSize,
     );
 

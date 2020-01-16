@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 
-import '.././model/point.dart';
+import './point.dart';
 
 class Cell {
-  final int position;
-  final Color color;
-  final Point point;
-  CellType cellType;
-  CellType mood;
-  bool isBitten;
-  bool animate;
-
   Cell({
+    @required this.color,
+    @required this.point,
     @required this.position,
     @required this.isBitten,
-    @required this.color,
-    @required this.cellType,
     @required this.mood,
-    @required this.point,
-    @required this.animate,
+    @required this.type,
   });
+
+  final Color color;
+  final Point point;
+  final int position;
+  bool isBitten;
+  CellType mood;
+  CellType type;
 }
 
 enum CellType {
-  droid,
   apple,
   dot,
+  droid,
   space,
 }

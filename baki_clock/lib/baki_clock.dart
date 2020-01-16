@@ -2,22 +2,19 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import './widget/responsive_safe_area.dart';
-import './widget/board.dart';
-import './widget/weather.dart';
-import './widget/clock.dart';
-import './widget/date.dart';
-
-import './config/size_config.dart';
 import './config/const.dart';
+import './config/size_config.dart';
 
 import './provider/theme.dart';
+
+import './widget/board.dart';
+import './widget/clock.dart';
+import './widget/date.dart';
+import './widget/responsive_safe_area.dart';
+import './widget/weather.dart';
 
 class BakiClock extends StatefulWidget {
   @override
@@ -26,6 +23,7 @@ class BakiClock extends StatefulWidget {
 
 class _BakiClockState extends State<BakiClock> {
   ThemeProvider _theme;
+  bool isChanged = false;
 
   @override
   void initState() {
@@ -36,16 +34,15 @@ class _BakiClockState extends State<BakiClock> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    Future.microtask(() => _theme.setThemeLight =
+    Future<void>.microtask(() => _theme.setThemeLight =
         Theme.of(context).brightness == Brightness.light
-            ? LIGHT_THEME
-            : DARK_THEME);
+            ? Const.LIGHT_THEME
+            : Const.DARK_THEME);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveSafeArea(builder: (context, safeSize) {
+    return ResponsiveSafeArea(builder: (BuildContext context, Size safeSize) {
       SizeConfig().init(context, safeSize);
 
       return Container(

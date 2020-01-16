@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './ghost.dart';
 import '../config/size_config.dart';
+import './ghost.dart';
 
 class Colon extends StatelessWidget {
   const Colon({
