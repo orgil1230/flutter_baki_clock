@@ -9,28 +9,32 @@ import '.././config/utils.dart';
 import './cell.dart';
 import './point.dart';
 
-const int MILLI_SECOND = 1000; // 1 sec  = 1000 milliseconds
-const int MOVE_SPEED = 500; //Droid move every 500 milliseconds 1 cell
-const int POSITION_RESET = 119; // 59.5 second reset all
-const int QUARTER_DIVIDE_CELLS = 30; //30 cells = 15 seconds
+const int milliSecond = 1000; // 1 sec  = 1000 milliseconds
+const int moveSpeed = 500; //Droid move every 500 milliseconds 1 cell
+const int positionReset = 119; // 59.5 second reset all
+const int quarterDivide = 30; // 30 cells = 15 seconds
+const int splitCells = 15;
 
-final List<Point> pathList = Utils.generatePathCoordinate();
-final List<Color> dotColors = Utils.generateDotColors();
+final List<Point> pathList = Utils.calculatePathPoints();
+final List<Color> dotColors = Utils.calculateDotColors();
 
 class Cells extends StatesRebuilder {
   Cells() {
-    _setFirstDroidPosition();
-    prepareCells();
+    _droidFirstPosition();
+    _prepareCells();
   }
 
+  List<Cell> get items => _items;
   final List<Cell> _items = <Cell>[];
-  int _droidPosition;
   DateTime _now = DateTime.now();
   Timer _timer;
+  int _droidPosition;
 
-  List<Cell> get items => _items;
+  void cancelTimer() {
+    _timer?.cancel();
+  }
 
-  void prepareCells() {
+  void _prepareCells() {
     int position = 0;
     for (final Point point in pathList) {
       final bool isBitten = position <= _droidPosition;
@@ -41,8 +45,8 @@ class Cells extends StatesRebuilder {
           position: position,
           isBitten: isBitten,
           color: color,
-          type: getCellType(position),
-          mood: getCellType(position, droidPosition: _droidPosition),
+          type: _getCellType(position),
+          mood: _getCellType(position, droidPosition: _droidPosition),
           point: point,
         ),
       );
@@ -50,10 +54,10 @@ class Cells extends StatesRebuilder {
     }
   }
 
-  CellType getCellType(int position, {int droidPosition}) {
+  CellType _getCellType(int position, {int droidPosition}) {
     if (position == droidPosition) {
       return CellType.droid;
-    } else if (position % QUARTER_DIVIDE_CELLS == 0) {
+    } else if (position % quarterDivide == 0) {
       return CellType.apple;
     } else if (position.isEven) {
       return CellType.dot;
@@ -63,22 +67,77 @@ class Cells extends StatesRebuilder {
     // Odd positions are an empty cells. (Every 0.5 seconds 1 empty cell)
   }
 
-  void toBite(Cell cell) {
+  /// We want to beginning of new second. Every second begins [odd] position.
+  /// Only first time sleep [sleepDuration] until round integer second :
+  /// 1.003 + sleep(0.997s) ~ 2, 1.450 + sleep(0.150s) ~ 2
+  /// Then [moveDroid] will begin of new second and fractionalSecond will be < 500milliseconds.
+  void _droidFirstPosition() {
+    _now = DateTime.now();
+    final int second = int.parse(DateFormat('s').format(_now));
+    final int fractionalSecond = int.parse(DateFormat('S').format(_now));
+    final int sleepDuration = milliSecond - fractionalSecond;
+
+    _droidPosition = second * 2 + 1;
+    sleep(Duration(milliseconds: sleepDuration));
+  }
+
+  /// Update droid position per 0.5 second. Make sure to do it at
+  /// the beginning of each new second, so that the clock is accurate.
+  /// Testing on emulator for 3 days and proved no mistake.
+  void moveDroid() {
+    _now = DateTime.now();
+    final int second = int.parse(DateFormat('s').format(_now));
+    final int fractionalSecond = int.parse(DateFormat('S').format(_now));
+    int sleepDuration = 0;
+
+    _bittenCell(_items[_droidPosition]);
+    _resetCells(_droidPosition);
+
+    if (_droidPosition.isEven) {
+      sleepDuration = milliSecond - fractionalSecond;
+      _droidPosition = second * 2 + 1;
+    } else {
+      sleepDuration = fractionalSecond > moveSpeed //Just in case
+          ? fractionalSecond - moveSpeed
+          : moveSpeed - fractionalSecond;
+      _droidPosition = second * 2;
+    }
+
+    _droidCell(_items[_droidPosition]);
+
+    _timer = Timer(
+      Duration(milliseconds: sleepDuration),
+      moveDroid,
+    );
+  }
+
+  /// Droid previous cell was bitten and set default type
+  void _bittenCell(Cell cell) {
     cell.mood = cell.type;
     cell.isBitten = true;
     rebuildStates(['${cell.position}']);
   }
 
-  Future<void> toReset(int droidPosition) async {
-    if (droidPosition == POSITION_RESET) {
+  /// Droid's current cell
+  void _droidCell(Cell cell) {
+    cell.mood = CellType.droid;
+    rebuildStates(['${cell.position}']);
+  }
+
+  /// We need reset every minutes
+  /// Split animations for performance 15 cells = 120 cells / 8
+  Future<void> _resetCells(int droidPosition) async {
+    if (droidPosition == positionReset) {
       int i = 0;
       int k = 0;
       for (final Cell item in _items) {
         item.isBitten = false;
         i++;
-        if (i == 15) {
-          for (int j = 15 * k; j < 15 * (k + 1); j++) {
-            rebuildStates(['$j']); //TODO : split animations
+        if (i == splitCells) {
+          for (int j = splitCells * k; j < splitCells * (k + 1); j++) {
+            if (j.isEven) {
+              rebuildStates(['$j']);
+            }
           }
           await Future<void>.delayed(const Duration(seconds: 1));
           i = 0;
@@ -86,54 +145,5 @@ class Cells extends StatesRebuilder {
         }
       }
     }
-  }
-
-  void stopTimer() {
-    _timer?.cancel();
-  }
-
-  /* Let we know first Droid Position
-   * Only app first time sleep until round integer second : 1.003 + sleep(0.997s) ~ 2, 1.450 + sleep(0.150s) ~ 2
-   * Then _updateTime beginning of new second and fractionalSecond will be < 500milliseconds.*/
-  void _setFirstDroidPosition() {
-    _now = DateTime.now();
-    final int second = int.parse(DateFormat('s').format(_now));
-    int fractionalSecond = int.parse(DateFormat('S').format(_now));
-    fractionalSecond = MILLI_SECOND - fractionalSecond;
-
-    sleep(Duration(milliseconds: fractionalSecond));
-    _droidPosition = second * 2 + 1;
-  }
-
-  /* Update droid position per 0.5 second. Make sure to do it at the beginning of each
-   * new second, so that the clock is accurate.
-   * Testing on emulator for 3 days and proved no mistake.*/
-  void moveDroid() {
-    _now = DateTime.now();
-    final int second = int.parse(DateFormat('s').format(_now));
-    final int fractionalSecond = int.parse(DateFormat('S').format(_now));
-    int sleepTime = 0;
-
-    toBite(_items[_droidPosition]); //previous position bitten and default type
-
-    if (_droidPosition.isOdd) {
-      sleepTime = fractionalSecond > MOVE_SPEED //Just in case
-          ? fractionalSecond - MOVE_SPEED
-          : MOVE_SPEED - fractionalSecond;
-      _droidPosition = second * 2;
-    } else {
-      sleepTime = MILLI_SECOND - fractionalSecond;
-      _droidPosition = second * 2 + 1;
-    }
-
-    _items[_droidPosition].mood = CellType.droid;
-    rebuildStates(['$_droidPosition']); //Most useful part of my app
-
-    toReset(_droidPosition); // if droid position = 119 reset all
-
-    _timer = Timer(
-      Duration(milliseconds: sleepTime),
-      moveDroid,
-    );
   }
 }

@@ -6,6 +6,7 @@ import '../config/size_config.dart';
 
 import '../provider/theme.dart';
 
+/// Dot cell element has 2 type of color
 class Dot extends StatefulWidget {
   const Dot({
     Key key,
@@ -21,7 +22,7 @@ class Dot extends StatefulWidget {
 }
 
 class _DotState extends State<Dot> {
-  bool fade = true;
+  bool _isBitten = true;
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +30,14 @@ class _DotState extends State<Dot> {
         Provider.of<ThemeProvider>(context, listen: true);
 
     setState(() {
-      fade = widget.isBitten;
+      _isBitten = widget.isBitten;
     });
     return AnimatedCrossFade(
-      duration: const Duration(seconds: Const.ANIMATION_DURATION),
+      duration: const Duration(seconds: Const.animationDuration),
       firstChild: dot(theme.data[ELEMENT.dot]),
       secondChild: dot(widget.color),
       crossFadeState:
-          fade ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          _isBitten ? CrossFadeState.showFirst : CrossFadeState.showSecond,
     );
   }
 

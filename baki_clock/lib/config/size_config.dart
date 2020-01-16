@@ -1,12 +1,7 @@
 import 'package:flutter/widgets.dart';
 
+///All comment pixels depend on Lenova Smart Clock size (800:400)
 class SizeConfig {
-  /* 39x2 + 21x2 = 120 cells */
-  static const int GRID_HORIZONTAL = 39; // horizontal cells
-  static const int GRID_VERTICAL = 23; // vertical cells added top and bottom 21 + 1 + 1
-
-  static MediaQueryData _mediaQueryData;
-
   static double screenWidth;
   static double screenHeight;
   static double cellWidth;
@@ -35,11 +30,15 @@ class SizeConfig {
   static double scoreMarginLeft;
 
   void init(BuildContext context, Size size) {
-    _mediaQueryData = MediaQuery.of(context);
+    /// 39x2 + 21x2 = 120 cells
+    const int gridHorizontal = 39; // horizontal cells
+    const int gridVertical = 23; // vertical cells  21 + 1 + 1
 
-    if (_mediaQueryData.orientation == Orientation.landscape) {
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
+
+    if (mediaQuery.orientation == Orientation.landscape) {
       /*var safeArea = 5.0;
-      if (_isIPhoneX(_mediaQueryData)) {
+      if (_isIPhoneX(mediaQueryData)) {
         safeArea = 25.0;
       }*/
       screenHeight = size.height; // 480 pixel 5:3 ratio
@@ -53,9 +52,9 @@ class SizeConfig {
     verticalMargin = screenWidth / 400; // 2px
     horizontalMargin = screenWidth / 200; // 4px
 
-    cellWidth = (screenWidth - horizontalMargin * 2) / GRID_HORIZONTAL;
+    cellWidth = (screenWidth - horizontalMargin * 2) / gridHorizontal;
     // 800px-8x:39 cells horizontal ~ 20.3px
-    cellHeight = (screenHeight - verticalMargin * 2) / GRID_VERTICAL;
+    cellHeight = (screenHeight - verticalMargin * 2) / gridVertical;
     // 480px-4px:23 cells vertical ~ 20.69px
 
     primaryFontHeight = screenWidth / 3.8; // ~228px

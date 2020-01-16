@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../config/size_config.dart';
 import './ghost.dart';
 
+/// Colons colors change same as Hour's color every minutes
 class Colon extends StatelessWidget {
   const Colon({
     Key key,

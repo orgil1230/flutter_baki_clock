@@ -33,15 +33,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// [Provider] for Theme and ClockModel.
     return MultiProvider(
       providers: <ChangeNotifierProvider<dynamic>>[
         ChangeNotifierProvider<ThemeProvider>(
-          create: (_) => ThemeProvider(theme: 'light'),
+          create: (_) => ThemeProvider(theme: ThemeProvider.light),
         ),
         ChangeNotifierProvider<ClockModel>.value(
           value: model,
         ),
       ],
+
+      /// [states_rebuilder] package for split rebuild widgets.
       child: Injector(
         inject: <Inject<Cells>>[Inject<Cells>(() => Cells())],
         builder: (_) {

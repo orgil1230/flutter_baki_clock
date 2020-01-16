@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../config/const.dart';
 
+/// Time color change right to left using [ColorTween] animation
 class Time extends StatefulWidget {
   const Time({
     Key key,
@@ -28,7 +29,7 @@ class _TimeState extends State<Time> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: Const.ANIMATION_DURATION),
+      duration: const Duration(seconds: Const.animationDuration),
       vsync: this,
     );
     void handler(AnimationStatus status) {
@@ -68,7 +69,7 @@ class _TimeState extends State<Time> with SingleTickerProviderStateMixin {
           child: Text(
             widget.time,
             style: TextStyle(
-              fontFamily: Const.PRIMARY_FONT,
+              fontFamily: Const.primaryFont,
               height: 1.0,
               color: _animation.value,
             ),

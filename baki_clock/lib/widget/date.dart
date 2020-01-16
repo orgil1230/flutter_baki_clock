@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../config/size_config.dart';
 import '../provider/theme.dart';
 
+/// Basic Date
 class Date extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class Date extends StatelessWidget {
 
     final TextStyle textStyle = TextStyle(
       color: theme.data[ELEMENT.date],
-      fontFamily: Const.SECONDARY_FONT,
+      fontFamily: Const.secondaryFont,
       fontSize: SizeConfig.secondaryFontSize,
     );
 

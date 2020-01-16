@@ -6,6 +6,7 @@ import './apple.dart';
 import './dot.dart';
 import './droid.dart';
 
+/// This is return current mood(type) of cell.
 class CellItem extends StatelessWidget {
   const CellItem({
     Key key,
@@ -18,10 +19,10 @@ class CellItem extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (cell.mood) {
       case CellType.droid:
-        return Droid(position: cell.position, color: cell.color);
+        return Droid(color: cell.color, position: cell.position);
 
       case CellType.apple:
-        return Apple(isBitten: cell.isBitten, color: cell.color);
+        return Apple(color: cell.color, isBitten: cell.isBitten);
 
       case CellType.dot:
         return Dot(color: cell.color, isBitten: cell.isBitten);

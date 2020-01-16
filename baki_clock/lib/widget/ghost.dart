@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import '../config/size_config.dart';
 
 const List<String> GHOSTS = <String>[
-  'inky',   //blue
+  'inky', //blue
   'blinky', //red
-  'clyde',  //yellow
-  'pinky',  //green
+  'clyde', //yellow
+  'pinky', //green
 ];
 
+/// Ghost animate every seconds
 class Ghost extends StatelessWidget {
   const Ghost({
     Key key,
@@ -33,6 +34,8 @@ class Ghost extends StatelessWidget {
 
   String ghost() {
     final String ghost = GHOSTS[colorPosition];
+
+    /// This logic for 2 ghosts position's difference
     final int position = colorPosition.isEven ? (second + 2) % 4 : second % 4;
 
     return 'assets/elements/ghosts/${ghost}_$position.png';

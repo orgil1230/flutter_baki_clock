@@ -6,12 +6,13 @@ import '../config/const.dart';
 import '../config/size_config.dart';
 import '../provider/theme.dart';
 
+/// Basic weather
 class Weather extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeProvider theme =
-        Provider.of<ThemeProvider>(context, listen: false);
-    final ClockModel model = Provider.of<ClockModel>(context, listen: false);
+        Provider.of<ThemeProvider>(context, listen: true);
+    final ClockModel model = Provider.of<ClockModel>(context, listen: true);
 
     return Container(
       child: Column(
@@ -32,7 +33,7 @@ class Weather extends StatelessWidget {
                 child: Text(
                   '${model.temperatureString.split('.').toList()[0]}°',
                   style: TextStyle(
-                    fontFamily: Const.SECONDARY_FONT,
+                    fontFamily: Const.secondaryFont,
                     color: theme.data[ELEMENT.temperature],
                     fontSize: SizeConfig.secondaryFontSize,
                   ),

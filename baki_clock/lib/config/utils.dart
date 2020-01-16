@@ -3,71 +3,78 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../model/point.dart';
-import './const.dart';
-
-const int X_AXIS_MAX = 38; // 39x23 Grid 120 cells
-const int Y_AXIS_MAX = 22; // 39x23 Grid 120 cells
-const int POSITION_ZERO = 41; // 0th or 60th second's position in pathList
-const int QUARTER_SECONDS = 15; // Gradient color change every 60/4 = 15 seconds
 
 class Utils {
-  static List<Color> generateDotColors() {
-    final List<Color> _dotColors = <Color>[];
-    double _interpolation;
+  static const List<Color> googleColors = <Color>[
+    Color(0xFF4081ed),
+    Color(0xFFe44134),
+    Color(0xFFf4b705),
+    Color(0xFF33a351),
+  ];
 
-    for (int i = 0; i < Const.GOOGLE_COLORS.length; i++) {
-      for (int j = 0; j < QUARTER_SECONDS; j++) {
-        _interpolation = double.parse((j / QUARTER_SECONDS).toStringAsFixed(2));
-        _dotColors.add(
+  /// Generate gradient colors for dots.
+  static List<Color> calculateDotColors() {
+    // Gradient color change every 60/4 = 15 seconds
+    const int quarterSeconds = 15;
+    final List<Color> dotColors = <Color>[];
+    double interpolation;
+
+    for (int i = 0; i < googleColors.length; i++) {
+      for (int j = 0; j < quarterSeconds; j++) {
+        interpolation = double.parse((j / quarterSeconds).toStringAsFixed(2));
+
+        dotColors.add(
           Color.lerp(
-            Const.GOOGLE_COLORS[i],
-            Const.GOOGLE_COLORS[(i + 1) % Const.GOOGLE_COLORS.length],
-            _interpolation,
+            googleColors[i],
+            googleColors[(i + 1) % 4],
+            interpolation,
           ),
         );
       }
     }
 
-    return _dotColors;
+    return dotColors;
   }
 
-  static List<Point> generatePathCoordinate() {
-    int _x = 0;
-    int _y = 0;
-    int _addend = 1;
-    List<Point> _tempBoard = <Point>[];
+  ///        horizontal: 39
+  /// 101 102 * * 119 0 1 * * * 18 19
+  /// 100                          20
+  /// *                             *
+  /// *                             *
+  /// *                             *  vertical: 23
+  /// *                             *
+  /// 80                           40
+  /// 79 78 * * * * * * * * * * 42 41
+  static List<Point> calculatePathPoints() {
+    const int positionZero = 41; // 0th && 60th second's position in pathList
+    const int xMax = 38; // 39 horizontal
+    const int yMax = 22; // 23 vertical
 
-    while ((_y < Y_AXIS_MAX && _addend > 0) || (_y > 0 && _addend < 0)) {
-      _tempBoard.add(Point(_x.toDouble(), _y.toDouble()));
-      _y += _addend;
+    List<Point> pathPoints = <Point>[];
+    int addend = 1;
+    int x = 0;
+    int y = 0;
 
-      if ((_y == Y_AXIS_MAX && _addend > 0) || (_y == 0 && _addend < 0)) {
-        while ((_x < X_AXIS_MAX && _addend > 0) || (_x > 0 && _addend < 0)) {
-          _tempBoard.add(Point(_x.toDouble(), _y.toDouble()));
-          _x += _addend;
+    while ((y < yMax && addend > 0) || (y > 0 && addend < 0)) {
+      pathPoints.add(Point(x.toDouble(), y.toDouble()));
+      y += addend;
 
-          if (_x == X_AXIS_MAX) {
-            _addend = -1;
+      if ((y == yMax && addend > 0) || (y == 0 && addend < 0)) {
+        while ((x < xMax && addend > 0) || (x > 0 && addend < 0)) {
+          pathPoints.add(Point(x.toDouble(), y.toDouble()));
+          x += addend;
+
+          if (x == xMax) {
+            addend = -1;
             break;
           }
         }
       }
     }
 
-    /*        horizontal: 39
-    101 102 * * * * 0 * * * * 18 19
-    100                          20
-      *                           *
-      *                           *
-      *                           *  vertical: 23
-      *                           *
-     80                          40
-     79 78  * * * * * * * * * 42 41
-              calculate this
-    */
-    _tempBoard = List<Point>.from(_tempBoard.sublist(POSITION_ZERO))
-      ..addAll(_tempBoard.sublist(0, POSITION_ZERO));
+    pathPoints = List<Point>.from(pathPoints.sublist(positionZero))
+      ..addAll(pathPoints.sublist(0, positionZero));
 
-    return _tempBoard;
+    return pathPoints;
   }
 }

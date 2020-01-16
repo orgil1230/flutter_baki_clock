@@ -2,23 +2,24 @@ import 'package:flutter/material.dart';
 
 import '../config/size_config.dart';
 
-const int START_TOP_SIDE = 101;
-const int START_RIGHT_SIDE = 19;
-const int START_BOTTOM_SIDE = 41;
-const int START_LEFT_SIDE = 79;
+const int startTop = 101;
+const int startRight = 19;
+const int startBottom = 41;
+const int startLeft = 79;
 const String DROID_IDLE = 'droid_idle.png';
 const String DROID_OPEN_MOUTH_LEFT = 'droid_open_mouth_left.png';
 const String DROID_OPEN_MOUTH_RIGHT = 'droid_open_mouth_right.png';
 
+/// Droid cell element has 2 type. And change color every half seconds.
 class Droid extends StatelessWidget {
   const Droid({
     Key key,
-    @required this.position,
     @required this.color,
+    @required this.position,
   }) : super(key: key);
 
-  final int position;
   final Color color;
+  final int position;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +27,9 @@ class Droid extends StatelessWidget {
       height: SizeConfig.droidSize,
       width: SizeConfig.droidSize,
       child: RotatedBox(
-        quarterTurns: droidTurn(),
+        quarterTurns: turnQuarter(),
         child: Image.asset(
-          'assets/elements/${droid()}',
+          'assets/elements/${droidType()}',
           fit: BoxFit.contain,
           alignment: Alignment.center,
           color: color,
@@ -37,30 +38,30 @@ class Droid extends StatelessWidget {
     );
   }
 
-  String droid() {
+  /// Some logic for droid's type
+  String droidType() {
     return position.isEven
         ? DROID_IDLE
-        : droidTurn() >= 4 ? DROID_OPEN_MOUTH_LEFT : DROID_OPEN_MOUTH_RIGHT;
+        : turnQuarter() >= 4 ? DROID_OPEN_MOUTH_LEFT : DROID_OPEN_MOUTH_RIGHT;
   }
 
-  /*          horizontal: 39
-    101 102 * * * * 0 * * * * 18 19
-    100                          20
-      *                           *
-      *                           *
-      *                           *  vertical: 23
-      *                           *
-     80                          40
-     79 78  * * * * * * * * * 42 41
-  */
-  int droidTurn() {
-    if (position >= START_TOP_SIDE || position <= START_RIGHT_SIDE) {
+  /// Droid turn using [RotateBox]
+  /// 101 * * * * * * * * * * * ** 19
+  /// *                             *
+  /// *                             *
+  /// *                             *
+  /// *   Droid's turn positions    *
+  /// *                             *
+  /// *                             *
+  /// 79 * * * * * * * * * * * * * 41
+  int turnQuarter() {
+    if (position >= startTop || position <= startRight) {
       return 0; // droid move left to right
     }
-    if (position <= START_BOTTOM_SIDE) {
+    if (position <= startBottom) {
       return 1; // droid move right to left
     }
-    if (position <= START_LEFT_SIDE) {
+    if (position <= startLeft) {
       return 4; // droid move bottom to top
     }
     return 5; // droid move top to bottom
