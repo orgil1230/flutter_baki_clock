@@ -37,11 +37,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: <ChangeNotifierProvider<dynamic>>[
         ChangeNotifierProvider<ThemeProvider>(
-          create: (_) => ThemeProvider(theme: ThemeProvider.light),
-        ),
-        ChangeNotifierProvider<ClockModel>.value(
-          value: model,
-        ),
+            create: (_) => ThemeProvider(theme: ThemeProvider.light)),
+        ChangeNotifierProvider<ClockModel>.value(value: model),
       ],
 
       /// [states_rebuilder] package for split rebuild widgets.

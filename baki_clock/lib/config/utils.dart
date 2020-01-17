@@ -3,30 +3,24 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../model/point.dart';
+import 'const.dart';
 
 class Utils {
-  static const List<Color> googleColors = <Color>[
-    Color(0xFF4081ed),
-    Color(0xFFe44134),
-    Color(0xFFf4b705),
-    Color(0xFF33a351),
-  ];
-
-  /// Generate gradient colors for dots.
+  /// Generate gradient colors for cells (Droid, Dots).
   static List<Color> calculateDotColors() {
     // Gradient color change every 60/4 = 15 seconds
     const int quarterSeconds = 15;
     final List<Color> dotColors = <Color>[];
     double interpolation;
 
-    for (int i = 0; i < googleColors.length; i++) {
+    for (int i = 0; i < Const.googleColors.length; i++) {
       for (int j = 0; j < quarterSeconds; j++) {
         interpolation = double.parse((j / quarterSeconds).toStringAsFixed(2));
 
         dotColors.add(
           Color.lerp(
-            googleColors[i],
-            googleColors[(i + 1) % 4],
+            Const.googleColors[i],
+            Const.googleColors[(i + 1) % 4],
             interpolation,
           ),
         );

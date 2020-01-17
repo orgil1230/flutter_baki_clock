@@ -7,11 +7,9 @@ import './ghost.dart';
 class Colon extends StatelessWidget {
   const Colon({
     Key key,
-    @required this.second,
     @required this.colorPosition,
   }) : super(key: key);
 
-  final int second;
   final int colorPosition;
 
   @override
@@ -22,14 +20,8 @@ class Colon extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Ghost(
-            second: second,
-            colorPosition: colorPosition,
-          ),
-          Ghost(
-            second: second,
-            colorPosition: (colorPosition + 1) % 4,
-          ),
+          Ghost(colorPosition: colorPosition),
+          Ghost(colorPosition: (colorPosition + 1) % 4),
         ],
       ),
     );

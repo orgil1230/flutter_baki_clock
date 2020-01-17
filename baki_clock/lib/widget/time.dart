@@ -29,7 +29,7 @@ class _TimeState extends State<Time> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: Const.animationDuration),
+      duration: const Duration(seconds: Const.timeAnimationDuration),
       vsync: this,
     );
     void handler(AnimationStatus status) {

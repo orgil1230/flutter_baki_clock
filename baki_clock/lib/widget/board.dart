@@ -12,8 +12,6 @@ import '../model/cell.dart';
 import '../model/cells.dart';
 import './cell_item.dart';
 
-/// [_buildCells] that prepare droid path(60 spaces, 56 dots, 4 apples).
-/// There are 120 cells = 60 seconds * 2.
 class Board extends StatefulWidget {
   @override
   _BoardState createState() => _BoardState();
@@ -22,19 +20,17 @@ class Board extends StatefulWidget {
 class _BoardState extends State<Board> {
   Cells _cells;
 
+  /// Set the initial values, droid first position, widgets position, ...
   @override
   void initState() {
     super.initState();
-
-    /// Set the initial values, droid first position, widgets position, ...
     _cells = Injector.get();
   }
 
+  /// Start move Droid every 0.5 seconds split rebuild current and previous cells.
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    /// Start move Droid every 0.5 seconds split rebuild current and previous cells.
     Future<void>.microtask(() => _cells.moveDroid());
   }
 
@@ -44,23 +40,38 @@ class _BoardState extends State<Board> {
     super.dispose();
   }
 
+  /// We can listen Widget's LifeCycleState by [StateWithMixinBuilder].
   @override
   Widget build(BuildContext context) {
+    final Cells cells = Injector.get<Cells>();
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: SizeConfig.verticalMargin,
         horizontal: SizeConfig.horizontalMargin,
       ),
-      child: Stack(
-        children: _buildCells(),
+      child: StateWithMixinBuilder<WidgetsBindingObserver>(
+        mixinWith: MixinWith.widgetsBindingObserver,
+        initState: (_, WidgetsBindingObserver observer) {
+          WidgetsBinding.instance.addObserver(observer);
+        },
+        dispose: (_, WidgetsBindingObserver observer) =>
+            WidgetsBinding.instance.removeObserver(observer),
+        didChangeAppLifecycleState:
+            (BuildContext context, AppLifecycleState state) {
+          cells.lifecycleState(state);
+        },
+        builder: (_, __) => Stack(
+          children: _buildCells(),
+        ),
       ),
     );
   }
 
+  /// [_buildCells] that prepare droid path(60 spaces, 56 dots, 4 apples).
+  /// There are 120 cells = 60 seconds * 2.
+  /// [StateBuilder] that helps for split rebuild widgets by tag(position).
   List<Positioned> _buildCells() {
     final List<Positioned> pathGrid = <Positioned>[];
-
-    /// [StateBuilder] that helps for split rebuild widgets by tag(position).
     for (final Cell cell in _cells.items) {
       pathGrid.add(
         Positioned(

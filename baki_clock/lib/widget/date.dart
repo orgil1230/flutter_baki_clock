@@ -13,7 +13,7 @@ class Date extends StatelessWidget {
     final String date =
         DateFormat('EE dd MMM').format(DateTime.now()).toUpperCase();
     final ThemeProvider theme =
-        Provider.of<ThemeProvider>(context, listen: false);
+        Provider.of<ThemeProvider>(context, listen: true);
 
     final TextStyle textStyle = TextStyle(
       color: theme.data[ELEMENT.date],
