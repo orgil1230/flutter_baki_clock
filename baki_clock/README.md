@@ -1,4 +1,4 @@
-# baki_clock
+# Baki Clock
 
 Google the Flutter Clock challenge project.
 
@@ -13,6 +13,7 @@ Google the Flutter Clock challenge project.
 Build a beautiful clock face UI with Flutter for the Lenovo Smart Clock.
 Developed for pac man 40th anniversary. Inspired by pac man and Google logos.
 It has a light theme and a dark theme, displays sample weather, droid inspired by (Android and Pac man), ghost, apples, and pellets.
+PS: All images(assets) drawn by me.
 
 <img src='baki_clock.gif' width='350'>
 
