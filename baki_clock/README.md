@@ -1,16 +1,24 @@
 # baki_clock
 
-A new Flutter project.
+Google The Flutter Clock challenge project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+flutter channel stable
+flutter upgrade
+unzip <project>.zip
+cd <name>_clock
+flutter create .
+flutter run (on Android or iOS in landscape)
 
-A few resources to get you started if this is your first Flutter project:
+Build a beautiful clock face UI with Flutter for the Lenovo Smart Clock.
+Developed for pac man 40th anniversary. Inspired by pac man and Google logo colors.
+It has a light theme and a dark theme, displays sample weather, pac man, ghost, apples, and pellets.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+<img src='baki_clock.gif' width='350'>
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src='baki_dark.png' width='350'>
+
+<img src='baki_light.png' width='350'>
+
+
